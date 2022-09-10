@@ -1,6 +1,10 @@
 # algoriza_task_3_weather_app
 
-A new Flutter project.
+A new Flutte
+
+https://user-images.githubusercontent.com/101331596/189491957-8b080f1b-6fd0-437d-b7d4-b28a92c7e023.mp4
+
+r project.
 
 ## Getting Started
 
