@@ -10,8 +10,38 @@ import 'widgets/Silverappbar.dart';
 import '../bloc/cubit.dart';
 import '../bloc/states.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  late ScrollController scrollController;
+  bool _appBarCollapsed = false;
+  bool isLight = true;
+  @override
+  void initState() {
+    scrollController = ScrollController()
+      ..addListener(() {
+        if (_isCollapsed() && !_appBarCollapsed) {
+          setState(() {
+            _appBarCollapsed = true;
+            isLight = false;
+          });
+        } else if (!_isCollapsed() && _appBarCollapsed) {
+          setState(() {
+            _appBarCollapsed = false;
+            isLight = true;
+          });
+        }
+      });
+    super.initState();
+  }
+
+  bool _isCollapsed() =>
+      scrollController.hasClients && scrollController.offset > (146 - kToolbarHeight);
 
   @override
   Widget build(BuildContext context){
@@ -20,20 +50,20 @@ class Home extends StatelessWidget {
       builder: (context, state) {
         WeatherCubit cubit = WeatherCubit.get(context) ;
         // var list = WeatherCubit.get(context).Weather;
-        if (cubit.currentWeatherData.name == null ) {
+        if (cubit.fiveDaysDatalocation['region']  == null ) {
           return Container(color: Colors.blue ,child: const Center(child: CircularProgressIndicator(color: Colors.black54,)));
         } else {
           return Scaffold(
-            backgroundColor: cubit.appBarCollapsed ? Colors.black : const Color(0xff66b2fa),
+            backgroundColor: _appBarCollapsed ? Colors.black : const Color(0xff66b2fa),
             extendBodyBehindAppBar: true,
             appBar: AppBar(
               elevation: 0,
               backgroundColor: Colors.transparent,
               centerTitle: true,
-              title: cubit.appBarCollapsed ? Row(
+              title: _appBarCollapsed ? Row(
                 children: [
                   Text(
-                      '${(cubit.currentWeatherData.name)}',
+                      '${(cubit.fiveDaysDatalocation['region'])}',
                     style: GoogleFonts.getFont(
                       'Libre Franklin',
                       textStyle: const TextStyle(
@@ -50,16 +80,16 @@ class Home extends StatelessWidget {
             ),
             drawer: const MyDrawer(),
             body: CustomScrollView(
-              controller: cubit.scrollController,
+              controller: scrollController,
               slivers: [
-                MYSilverAppbar(),
+                MYSilverAppbar(iscol: _appBarCollapsed,),
                 SliverToBoxAdapter(
                   child: Column(
                     children: [
                       const SizedBox(
                         height: 20,
                       ),
-                      TempHourCard(),
+                      TempHourCard(iscol: _appBarCollapsed),
                       Padding(
                         padding: const EdgeInsets.only(
                           top: 10,
@@ -70,7 +100,7 @@ class Home extends StatelessWidget {
                           height: 110,
                           width: double.infinity,
                           decoration: BoxDecoration(
-                            color: cubit.appBarCollapsed?  Color(0xff171717) : Colors.white.withOpacity(0.3),
+                            color: _appBarCollapsed?  Color(0xff171717) : Colors.white.withOpacity(0.3),
                             borderRadius: BorderRadius.circular(20),
                           ),
                           padding: const EdgeInsets.all(20),
@@ -91,9 +121,9 @@ class Home extends StatelessWidget {
                           ),
                         ),
                       ),
-                      FiveDayTempCard(),
-                      SunCard(),
-                      UvCard(),
+                      FiveDayTempCard(iscol: _appBarCollapsed,),
+                      SunCard(iscol: _appBarCollapsed,),
+                      UvCard(iscol: _appBarCollapsed,),
                     ],
                   ),
                 ),

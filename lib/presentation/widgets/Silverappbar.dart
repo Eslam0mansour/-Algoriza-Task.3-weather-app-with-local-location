@@ -7,8 +7,8 @@ import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 
 class MYSilverAppbar extends StatelessWidget {
-
-   MYSilverAppbar({Key? key , }) : super(key: key);
+bool iscol ;
+   MYSilverAppbar({Key? key ,required this.iscol }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,23 +30,21 @@ class MYSilverAppbar extends StatelessWidget {
           automaticallyImplyLeading: false,
           flexibleSpace: FlexibleSpaceBar(
             expandedTitleScale: 1.2,
-            titlePadding: cubit.appBarCollapsed ? const EdgeInsets.only(
+            titlePadding: iscol ? const EdgeInsets.only(
                 top: 110,
               right: 20,
               left: 20
             )
                 : const EdgeInsets.all(20 ),
             centerTitle: true,
-            title: cubit.appBarCollapsed ? Column(
+            title: iscol ? Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      (cubit.currentWeatherData.main != null) ?
-                      '${(cubit.currentWeatherData.main!.temp! - 273.15).round().toString()}\u2070'
-                          : '',
+                      '${(cubit.fiveDaysDatacurant['temp_c'] ).round().toString()}\u2070',
                       style: const TextStyle(
                           fontSize: 60,
                           fontWeight: FontWeight.w300,
@@ -57,9 +55,7 @@ class MYSilverAppbar extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          (cubit.currentWeatherData.main != null) ?
-                          '${(cubit.currentWeatherData.main!.tempMax! - 273.15).round().toString()}\u2070 / ${(cubit.currentWeatherData.main!.tempMin! - 273.15).round().toString()}\u2070'
-                              : '',
+                          '${(cubit.fiveDaysDataa[0]['day']['mintemp_c']).round()}\u2070 / ${(cubit.fiveDaysDataa[0]['day']['maxtemp_c'] ).round()}\u2070',
                           style: GoogleFonts.getFont(
                             'Libre Franklin',
                             textStyle: const TextStyle(
@@ -102,9 +98,7 @@ class MYSilverAppbar extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      (cubit.currentWeatherData.main != null) ?
-                      '${(cubit.currentWeatherData.main!.temp! - 273.15).round().toString()}\u2070'
-                          : '',
+                      '${(cubit.fiveDaysDatacurant['temp_c'] ).round().toString()}\u2070',
                       style: GoogleFonts.getFont(
                         'Libre Franklin',
                         textStyle: const TextStyle(
@@ -125,7 +119,7 @@ class MYSilverAppbar extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    Text('${(cubit.currentWeatherData.name)}',
+                    Text('${(cubit.fiveDaysDatalocation['region'])}',
                       style: GoogleFonts.getFont(
                         'Libre Franklin',
                         textStyle: const TextStyle(
@@ -145,9 +139,7 @@ class MYSilverAppbar extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      (cubit.currentWeatherData.main != null) ?
-                      '${(cubit.currentWeatherData.main!.tempMax! - 273.15).round().toString()}\u2070 / ${(cubit.currentWeatherData.main!.tempMin! - 273.15).round().toString()}\u2070'
-                          : '',
+                      '${(cubit.fiveDaysDataa[0]['day']['mintemp_c']).round()}\u2070 / ${(cubit.fiveDaysDataa[0]['day']['maxtemp_c'] ).round()}\u2070',
                       style: GoogleFonts.getFont(
                         'Libre Franklin',
                         textStyle: const TextStyle(
@@ -157,9 +149,7 @@ class MYSilverAppbar extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      (cubit.currentWeatherData.main != null) ?
-                      ' Fells like ${(cubit.currentWeatherData.main!.temp! - 273.15).round().toString()}\u2070'
-                          : '',
+                      ' Fells like ${(cubit.fiveDaysDatacurant['feelslike_c']).round()}\u2070',
                       style: GoogleFonts.getFont(
                         'Libre Franklin',
                         textStyle: const TextStyle(
@@ -183,7 +173,7 @@ class MYSilverAppbar extends StatelessWidget {
               ],
             ),
             background: Container(
-              color: cubit.appBarCollapsed?  Colors.black :  Color(0xff66b2fa),
+              color: iscol?  Colors.black :  Color(0xff66b2fa),
               alignment: Alignment.bottomLeft,
               // child: Text(
               //   (cubit.currentWeatherData.main != null) ?

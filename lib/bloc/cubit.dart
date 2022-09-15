@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:get/get.dart';
 import '../service/Dio.dart';
 import '../models/current_weather_data.dart';
 import '../service/Dio2.dart';
@@ -17,37 +16,25 @@ class WeatherCubit extends Cubit<WeatherStates> {
 
   var searchController = TextEditingController();
 
-     bool appBarCollapsed = false;
-     ScrollController scrollController = ScrollController() ;
-
-     bool isCollapsed() =>
-         scrollController.hasClients && scrollController.offset > (146 - kToolbarHeight);
-     void scroll(){
-       scrollController = ScrollController()
-         ..addListener(() {
-           if (isCollapsed() && !appBarCollapsed) {
-             appBarCollapsed = true;
-             emit(GetScrollLoadingState());
-           } else if (!isCollapsed() && appBarCollapsed) {
-             appBarCollapsed = false;
-             emit(GetScrollSuccessState());
-
-           }
-         });
-  }
-
-
   late StreamSubscription<Position> streamSubscription;
 
     List<dynamic> fiveDaysData  = [];
     List<dynamic> fiveDaysDataa = [];
+  Map<String,dynamic> fiveDaysDatalocation = {};
+  Map<String,dynamic> fiveDaysDatacurant = {};
 
   CurrentWeatherData currentWeatherData = CurrentWeatherData();
 
   List<CurrentWeatherData> dataList = [];
 
   List<dynamic> search = [];
-  void getSearch (String value) {
+
+  double? latitude ;
+  double? longitude ;
+  double? address  ;
+
+  void getSearch (String value)
+  {
     emit(NewsGetSearchLoadingState());
     DioHelper2.getDate2(url: '/direct',
         query: {
@@ -67,49 +54,45 @@ class WeatherCubit extends Cubit<WeatherStates> {
     });
   }
 
-  void getCurrentWeatherData( {
-    double? lat , double? lon
-}) {
-
-    WeatherService(city: 'lat=$lat&lon=$lon').getCurrentWeatherData(
-        onSuccess: (data) {
-          currentWeatherData = data;
-        },
-        onError: (error) => {
-          print(error),
-        });
-  }
-  void getWeather({
-    double? lat , double? lon
-  }) {
-    emit(GetWeatherLoadingState());
-    DioHelper.getDate(url: '/forecast.json', query: {
-      'key': 'ab8d913f03ab4d7dbe1102035220909',
-      'q': '$lat,$lon',
-      'days': '7',
-      'aqi': 'no',
-      'alerts': 'no',
-    }).then((value) {
-      fiveDaysData  = value.data["forecast"]["forecastday"][0]["hour"] ;
-      fiveDaysDataa = value.data["forecast"]["forecastday"];
-       print(fiveDaysData[0]["time"]);
-       print(fiveDaysDataa[0]["date"]);
-      emit(GetWeatherSuccessState());
-    }).catchError((error) {
-      emit(GetWeatherErrorState(error.toString()));
-      print(error.toString());
-    });
-  }
-
-
-  double? latitude ;
-  double? longitude ;
-  double? address  ;
-
+void getwithsearch({
+  double? latitude2 ,
+  double? longitude2
+})
+{
+  WeatherService(city: 'lat=$latitude2&lon=$longitude2').getCurrentWeatherData(
+      onSuccess: (data) {
+        currentWeatherData = data;
+        emit(GetWeather5SuccessState());
+      },
+      onError: (error) => {
+        print(error),
+      });
+   DioHelper.getDate(url: '/forecast.json', query: {
+    'key': 'ab8d913f03ab4d7dbe1102035220909',
+    'q': '$latitude2,$longitude2',
+    'days': '7',
+    'aqi': 'no',
+    'alerts': 'no',
+  }).then((value) {
+    fiveDaysData  = value.data["forecast"]["forecastday"][0]["hour"] ;
+    fiveDaysDataa = value.data["forecast"]["forecastday"];
+    fiveDaysDatalocation = value.data["location"];
+    fiveDaysDatacurant = value.data["current"];
+    print(fiveDaysData[0]["time"]);
+    print(fiveDaysDataa[0]["date"]);
+    print(fiveDaysDatalocation["name"]);
+    print(fiveDaysDatacurant["temp_c"]);
+    emit(GetWeatherSuccessState());
+  }).catchError((error) {
+    emit(GetWeatherErrorState(error.toString()));
+    print(error.toString());
+  });
+}
   Future<void> getLocation({
   double? lat ,
     double? lon ,
 }) async {
+
     bool serviceEnabled;
 
     LocationPermission permission;
@@ -135,10 +118,40 @@ class WeatherCubit extends Cubit<WeatherStates> {
            latitude= (lat??  position.latitude) as double?;
            longitude= (lon?? position.longitude) as double?;
           // getAddressFromLatLang(position);
-           getCurrentWeatherData(lat: latitude as double,lon: longitude as double);
-           getWeather(lat: latitude as double,lon:  longitude as double);
+          //  getCurrentWeatherData(lat: latitude as double,lon: longitude as double);
+          //  getWeather(lat: latitude as double,lon:  longitude as double);
            print(latitude);
+           print(longitude);
         });
+    WeatherService(city: 'lat=$latitude&lon=$longitude').getCurrentWeatherData(
+        onSuccess: (data) {
+          currentWeatherData = data;
+          emit(GetWeather5SuccessState());
+        },
+        onError: (error) => {
+          print(error),
+        });
+    await DioHelper.getDate(url: '/forecast.json', query: {
+      'key': 'ab8d913f03ab4d7dbe1102035220909',
+      'q': '$latitude,$longitude',
+      'days': '7',
+      'aqi': 'no',
+      'alerts': 'no',
+    }).then((value) {
+      fiveDaysData  = value.data["forecast"]["forecastday"][0]["hour"] ;
+      fiveDaysDataa = value.data["forecast"]["forecastday"];
+      fiveDaysDatalocation = value.data["location"];
+      fiveDaysDatacurant = value.data["current"];
+      print(fiveDaysData[0]["time"]);
+      print(fiveDaysDataa[0]["date"]);
+      print(fiveDaysDatalocation["name"]);
+      print(fiveDaysDatacurant["temp_c"]);
+      emit(GetWeatherSuccessState());
+    }).catchError((error) {
+      emit(GetWeatherErrorState(error.toString()));
+      print(error.toString());
+    });
+    emit(GetScrollSuccessState());
   }
 
 ////////////////////////////////////////////////////////////////////////

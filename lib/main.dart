@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (BuildContext context) => WeatherCubit()..scroll(),)
+        BlocProvider(create: (BuildContext context) => WeatherCubit()..getLocation(),)
       ],
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,

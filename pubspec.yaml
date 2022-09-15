@@ -44,6 +44,9 @@ dependencies:
   get: ^4.6.5
   google_fonts: ^3.0.1
   conditional_builder_null_safety: ^0.0.6
+  flutter_launcher_icons: ^0.10.0
+  flutter_native_splash: any
+  syncfusion_flutter_charts: ^20.2.48
 
 dev_dependencies:
   flutter_test:
@@ -53,8 +56,20 @@ dev_dependencies:
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
-  # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  flutter_native_splash: any
+
+flutter_native_splash:
+    color: "#66b2fa"
+    image: assets/ic_launcher.png
+
+    flutter_launcher_icons: ^0.10.0
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/ic_launcher.png"
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

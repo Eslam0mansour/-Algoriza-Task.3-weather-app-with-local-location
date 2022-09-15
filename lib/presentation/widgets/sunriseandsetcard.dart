@@ -5,7 +5,8 @@ import '../../bloc/cubit.dart';
 import '../../bloc/states.dart';
 
 class SunCard extends StatelessWidget {
-  const SunCard({Key? key}) : super(key: key);
+  bool iscol ;
+   SunCard({Key? key, required this.iscol}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class SunCard extends StatelessWidget {
               height: 170,
               width: double.infinity,
               decoration: BoxDecoration(
-                color: cubit.appBarCollapsed? const Color(0xff171717) : Colors.white.withOpacity(0.3),
+                color: iscol ? const Color(0xff171717) : Colors.white.withOpacity(0.3),
                 borderRadius: BorderRadius.circular(20),
               ),
               padding: const EdgeInsets.all(20),

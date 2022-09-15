@@ -30,6 +30,7 @@ class GetScrollErrorState extends WeatherStates {
 class NewsGetSearchLoadingState extends WeatherStates {}
 
 class NewsGetSearchSuccessState extends WeatherStates {}
+class WeatherStatesChanged extends WeatherStates {}
 
 class NewsGetSearchErrorState extends WeatherStates {
   final String error ;

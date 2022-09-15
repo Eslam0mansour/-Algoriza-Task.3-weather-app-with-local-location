@@ -70,8 +70,8 @@ class MyDrawer extends StatelessWidget {
                             color: Colors.white,
                             size: 18,
                           ),
-                          Text('${(cubit.currentWeatherData.name)}',
-                            style: const TextStyle(
+                          Text(
+                            '${(cubit.fiveDaysDatalocation['region'])}',                            style: const TextStyle(
                                 fontSize: 21,
                                 color: Colors.white,
                               fontWeight: FontWeight.w500

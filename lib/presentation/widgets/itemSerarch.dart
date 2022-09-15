@@ -30,41 +30,45 @@ class ItemSearch extends StatelessWidget {
               padding: const EdgeInsets.all(15),
               child: InkWell(
                 onTap: (){
-                  // cubit.getCurrentWeatherData(lat: list['lat'], lon: list['lon']);
-                  // cubit.getWeather(list['lat'], list['lon']);
-                  cubit.getLocation(lat: list['lat'] , lon: list['lon'] );
-
+                  cubit.getwithsearch(latitude2: list['lat'] , longitude2: list['lon'] );
                   Navigator.push(context, MaterialPageRoute(
                     builder: (context) => Home(),
                   ),);
                   },
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      Text(
-                        '${list['name']}',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 20
-                        ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '${list['name']}',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 20
                       ),
-                      Text(
-                        ' - ${list['country']}',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 20
-                        ),
+                    ),
+                    Text(
+                      ' - ${list['country']}',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 20
                       ),
-                      Text(
-                        ' - ${list['state']}',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20
-                        ),
+                    ),
+                    Text(
+                      ' - ${list['state']}',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20
                       ),
-                    ],
-                  ),
+                    ),
+                    IconButton(
+                        onPressed: (){
+
+                        },
+                        icon: const Icon(
+                          Icons.favorite_border,
+                          size: 30,
+                        ),
+                    )
+                  ],
                 ),
               ),
             ),

@@ -7,7 +7,8 @@ import '../../bloc/cubit.dart';
 import '../../bloc/states.dart';
 
 class FiveDayTempCard extends StatelessWidget {
-  const FiveDayTempCard({Key? key}) : super(key: key);
+  bool iscol ;
+   FiveDayTempCard({Key? key, required this.iscol}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,7 @@ class FiveDayTempCard extends StatelessWidget {
               height: 300,
               width: double.infinity,
               decoration: BoxDecoration(
-                color: cubit.appBarCollapsed? const Color(0xff171717) : Colors.white.withOpacity(0.3),
+                color: iscol? const Color(0xff171717) : Colors.white.withOpacity(0.3),
                 borderRadius: BorderRadius.circular(20),
               ),
               padding: const EdgeInsets.all(20),
